@@ -123,9 +123,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Configuracion de djangorestframework
+
 REST_FRAMEWORK = {
 
         'DEFAULT_AUTHENTICATION_CLASSES': (
             'rest_framework_simplejwt.authentication.JWTAuthentication',
             ),
         }
+
+# Indicación a Django para que el usuario sea Usuario
+
+AUTH_USER_MODEL = 'accounts.Usuario'
