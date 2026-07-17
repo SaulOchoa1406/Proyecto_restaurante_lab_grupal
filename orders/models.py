@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from tables.models import Mesa
 from inventory.models import Producto
+from decimal import Decimal
+from django.db.models import Sum
 
 class Pedido(models.Model):
 
@@ -53,6 +55,15 @@ class Pedido(models.Model):
         def __str__(self):
             return f"Pedido #{self.id}"
 
+        def actualizar_total(self):
+
+            total = self.detalles.aggregate(
+                    total=Sum("subtotal")
+                    )["total"] or Decimal("0.00")
+
+            self.total = total
+            self.save(update_fields=["total"])
+
 
 class DetallePedido(models.Model):
 
@@ -80,6 +91,24 @@ class DetallePedido(models.Model):
             max_digits=10,
             decimal_places=2
             )
+
+    def save(self, *args, **kwargs):
+
+        self.subtotal = self.cantidad * self.precio_unitario
+
+        super().save(*args, **kwargs)
+
+        self.pedido.actualizar_total()
+
+
+    def delete(self, *args, **kwargs):
+
+        pedido = self.pedido
+
+        super().delete(*args, **kwargs)
+
+        pedido.actualizar_total()
+
 
     def __str__(self):
         return f"{self.producto.nombre} x{self.cantidad}"
