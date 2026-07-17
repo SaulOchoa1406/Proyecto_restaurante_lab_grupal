@@ -2,7 +2,7 @@ from django.db import models
 
 class Mesa(models.Model):
     
-    número = models.PositiveSmallIntegerField(
+    numero = models.PositiveSmallIntegerField(
             unique = True
             )
 
@@ -10,5 +10,5 @@ class Mesa(models.Model):
             default = False
             )
 
-    def __str__ (self):
+    def __str__(self):
         return f"Mesa {self.numero}"

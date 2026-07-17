@@ -24,7 +24,7 @@ class ProductoAdmin(admin.ModelAdmin):
             )
 
     list_filter = (
-            "categoría",
+            "categoria",
             "activo",
             )
 
