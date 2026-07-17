@@ -82,8 +82,9 @@ class Pedido(models.Model):
                 total=Sum("subtotal")
                 )["total"] or Decimal("0.00")
 
+        Pedido.objects.filter(pk=self.pk).update(total=total)
+
         self.total = total
-        self.save(update_fields=["total"])
 
     def save(self, *args, **kwargs):
 
@@ -122,16 +123,20 @@ class DetallePedido(models.Model):
             )
 
     precio_unitario = models.DecimalField(
-            max_digits=8,
-            decimal_places=2
+            max_digits=10,
+            decimal_places=2,
+            editable=False
             )
 
     subtotal = models.DecimalField(
             max_digits=10,
-            decimal_places=2
+            decimal_places=2,
+            editable=False
             )
 
     def save(self, *args, **kwargs):
+
+        self.precio_unitario = self.producto.precio
 
         self.subtotal = self.cantidad * self.precio_unitario
 
