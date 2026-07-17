@@ -18,7 +18,7 @@ class Producto(models.Model):
     descripcion = models.TextField(blank=True)
 
     precio = models.DecimalField(
-            max_digits=8,
+            max_digits=10,
             decimal_places=2
             )
 
