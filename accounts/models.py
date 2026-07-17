@@ -8,9 +8,6 @@ class Usuario(AbstractUser):
         COCINERO = "COCINERO", "Cocinero"
         ADMIN = "ADMIN", "Administrador"
 
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-
     rol = models.CharField(
             max_length=20,
             choices=Roles.choices,

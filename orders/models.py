@@ -17,91 +17,91 @@ class Pedido(models.Model):
         PAGADO = "PAGADO", "Pagado"
         CANCELADO = "CANCELADO", "Cancelado"
 
-        mesa = models.ForeignKey(
-                Mesa,
-                on_delete=models.PROTECT,
-                related_name="pedidos"
-                )
+    mesa = models.ForeignKey(
+            Mesa,
+            on_delete=models.PROTECT,
+            related_name="pedidos"
+            )
 
-        mozo = models.ForeignKey(
-                settings.AUTH_USER_MODEL,
-                on_delete=models.PROTECT,
-                related_name="pedidos"
-                )
+    mozo = models.ForeignKey(
+            settings.AUTH_USER_MODEL,
+            on_delete=models.PROTECT,
+            related_name="pedidos"
+            )
 
-        cliente_nombre = models.CharField(
-                max_length=150,
-                blank=True
-                )
+    cliente_nombre = models.CharField(
+            max_length=150,
+            blank=True
+            )
 
-        cliente_dni = models.CharField(
-                max_length=8,
-                blank=True
-                )
+    cliente_dni = models.CharField(
+            max_length=8,
+            blank=True
+            )
 
-        fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(auto_now_add=True)
 
-        estado = models.CharField(
-                max_length=20,
-                choices=Estados.choices,
-                default=Estados.PENDIENTE
-                )
+    estado = models.CharField(
+            max_length=20,
+            choices=Estados.choices,
+            default=Estados.PENDIENTE
+            )
 
-        total = models.DecimalField(
-                max_digits=10,
-                decimal_places=2,
-                default=0
-                )
+    total = models.DecimalField(
+            max_digits=10,
+            decimal_places=2,
+            default=0
+            )
         
-        def clean(self):
+    def clean(self):
 
-            pedidos_abiertos = Pedido.objects.filter(
-                    mesa=self.mesa,
-                    estado__in=[
-                        self.Estados.PENDIENTE,
-                        self.Estados.EN_PREPARACION,
-                        self.Estados.LISTO,
-                        self.Estados.ENTREGADO
-                        ]
+        pedidos_abiertos = Pedido.objects.filter(
+                mesa=self.mesa,
+                estado__in=[
+                    self.Estados.PENDIENTE,
+                    self.Estados.EN_PREPARACION,
+                    self.Estados.LISTO,
+                    self.Estados.ENTREGADO
+                    ]
+                )
+
+        if self.pk:
+            pedidos_abiertos = pedidos_abiertos.exclude(pk=self.pk)
+
+        if pedidos_abiertos.exists():
+            raise ValidationError(
+                    "Esta mesa ya tiene un pedido activo."
                     )
 
-            if self.pk:
-                pedidos_abiertos = pedidos_abiertos.exclude(pk=self.pk)
+    def __str__(self):
+        return f"Pedido #{self.id}"
 
-            if pedidos_abiertos.exists():
-                raise ValidationError(
-                        "Esta mesa ya tiene un pedido activo."
-                        )
+    def actualizar_total(self):
 
-        def __str__(self):
-            return f"Pedido #{self.id}"
+        total = self.detalles.aggregate(
+                total=Sum("subtotal")
+                )["total"] or Decimal("0.00")
 
-        def actualizar_total(self):
+        self.total = total
+        self.save(update_fields=["total"])
 
-            total = self.detalles.aggregate(
-                    total=Sum("subtotal")
-                    )["total"] or Decimal("0.00")
+    def save(self, *args, **kwargs):
 
-            self.total = total
-            self.save(update_fields=["total"])
+        self.full_clean()
 
-        def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
-            self.full_clean()
+        if self.estado in [
+                self.Estados.PAGADO,
+                self.Estados.CANCELADO
+                ]:
+            self.mesa.ocupada = False
 
-            super().save(*args, **kwargs)
+        else:
 
-            if self.estado in [
-                    self.Estados.PAGADO,
-                    self.Estados.CANCELADO
-                    ]:
-                self.mesa.ocupada = False
+            self.mesa.ocupada = True
 
-            else:
-
-                self.mesa.ocupada = True
-
-            self.mesa.save(update_fields=["ocupada"])
+        self.mesa.save(update_fields=["ocupada"])
 
 
 class DetallePedido(models.Model):
