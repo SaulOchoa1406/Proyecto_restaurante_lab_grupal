@@ -2,7 +2,7 @@ from django.db import models
 
 class Mesa(models.Model):
     
-    número = models.PositiveIntegerField(
+    número = models.PositiveSmallIntegerField(
             unique = True
             )
 
