@@ -4,6 +4,7 @@ from tables.models import Mesa
 from inventory.models import Producto
 from decimal import Decimal
 from django.db.models import Sum
+from django.core.exceptions import ValidationError
 
 class Pedido(models.Model):
 
@@ -51,6 +52,26 @@ class Pedido(models.Model):
                 decimal_places=2,
                 default=0
                 )
+        
+        def clean(self):
+
+            pedidos_abiertos = Pedido.objects.filter(
+                    mesa=self.mesa,
+                    estado__in=[
+                        self.Estados.PENDIENTE,
+                        self.Estados.EN_PREPARACION,
+                        self.Estados.LISTO,
+                        self.Estados.ENTREGADO
+                        ]
+                    )
+
+            if self.pk:
+                pedidos_abiertos = pedidos_abiertos.exclude(pk=self.pk)
+
+            if pedidos_abiertos.exists():
+                raise ValidationError(
+                        "Esta mesa ya tiene un pedido activo."
+                        )
 
         def __str__(self):
             return f"Pedido #{self.id}"
@@ -63,6 +84,24 @@ class Pedido(models.Model):
 
             self.total = total
             self.save(update_fields=["total"])
+
+        def save(self, *args, **kwargs):
+
+            self.full_clean()
+
+            super().save(*args, **kwargs)
+
+            if self.estado in [
+                    self.Estados.PAGADO,
+                    self.Estados.CANCELADO
+                    ]:
+                self.mesa.ocupada = False
+
+            else:
+
+                self.mesa.ocupada = True
+
+            self.mesa.save(update_fields=["ocupada"])
 
 
 class DetallePedido(models.Model):
