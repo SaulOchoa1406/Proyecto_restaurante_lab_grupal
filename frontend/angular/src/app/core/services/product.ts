@@ -1,4 +1,9 @@
-import { Service } from '@angular/core';
+import { Injectable, Service } from '@angular/core';
 
-@Service()
-export class Product {}
+@Injectable({
+    providedIn: 'root'
+})
+
+export class ProductService {
+    constructor() {}
+}

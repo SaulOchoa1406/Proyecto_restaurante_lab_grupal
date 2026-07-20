@@ -1,4 +1,21 @@
-import { Service } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-@Service()
-export class Auth {}
+@Injectable({
+    providedIn: 'root'
+})
+
+export class AuthService {
+    constructor() {}
+    
+    login() {};
+
+    register() {};
+
+    logout() {};
+
+    getToken() {};
+
+    isLoggedIn() {};
+
+    getCurrentUser() {};
+}

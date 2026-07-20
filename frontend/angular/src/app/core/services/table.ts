@@ -1,4 +1,8 @@
-import { Service } from '@angular/core';
+import { Injectable, Service } from '@angular/core';
 
-@Service()
-export class Table {}
+@Injectable({
+    providedIn: 'root'
+})
+export class TableService {
+    constructor() {}
+}
