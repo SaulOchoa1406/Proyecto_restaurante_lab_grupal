@@ -7,15 +7,24 @@ import { Injectable } from '@angular/core';
 export class AuthService {
     constructor() {}
     
-    login() {};
+    login() {}
 
-    register() {};
+    register() {}
 
-    logout() {};
+    logout() {}
+    
+    refreshToken() {}
+    
+    getCurrentUser() {}
 
-    getToken() {};
+    saveTokens() {}
 
-    isLoggedIn() {};
+    getAccesToken() {}
 
-    getCurrentUser() {};
+    getRefreshToken() {}
+
+    isLoggedIn() {}
+
+    isTokenExpired() {}
+
 }
