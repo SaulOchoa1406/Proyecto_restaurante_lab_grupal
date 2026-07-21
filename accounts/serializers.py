@@ -19,7 +19,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password')
         user = User(**validated_data)
         user.set_password(password)
-        user.role = User.Roles.MOZO
+        user.rol = User.Roles.MOZO
         user.save()
         return user
 
