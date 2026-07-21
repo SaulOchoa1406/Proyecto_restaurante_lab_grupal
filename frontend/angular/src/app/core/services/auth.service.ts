@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environmnet } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { User } from '../models/user';
 
 @Injectable({
     providedIn: 'root'
@@ -38,20 +39,43 @@ export class AuthService {
         );
     }
     
-    logout() {}
+    logout(): Observable<any> {
+        const refresh = this.getRefreshToken;
+
+        return this.http.post(
+            `${this.api}/accounts/logout/`,
+            {
+                refresh
+            }
+        ).pipe(
+            tap(() => {
+                localStorage.removeItem("acces");
+                localStorage.removeItem("refresh");
+            })
+        );
+    }
     
-    refreshToken() {}
-    
-    getCurrentUser() {}
+    getCurrentUser(): Observable<User> {
+        return this.http.get<User>(
+            `${this.api}/accounts/me/`
+        );
+    }
 
-    saveTokens() {}
+    saveTokens(access: any, refresh: any):void {
+        localStorage.setItem("access", access);
+        localStorage.setItem("refresh", refresh);
+    }
 
-    getAccesToken() {}
+    getAccesToken(): string | null {
+        return localStorage.getItem("access");
+    }
 
-    getRefreshToken() {}
+    getRefreshToken(): string | null {
+        return localStorage.getItem("refresh");
+    }
 
-    isLoggedIn() {}
-
-    isTokenExpired() {}
+    isLoggedIn(): boolean {
+        return this.getAccesToken() !== null;
+    }
 
 }
