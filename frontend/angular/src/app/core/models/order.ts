@@ -1,4 +1,4 @@
-import { Table } from "../services/table";
+import { Table } from "./table";
 import { User } from "./user";
 import { OrderDetail } from "./order-detail";
 

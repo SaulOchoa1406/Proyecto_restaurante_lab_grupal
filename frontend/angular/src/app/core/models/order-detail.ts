@@ -1,4 +1,4 @@
-import { Product } from "../services/product";
+import { Product } from "./product";
 
 export interface OrderDetail {
     id:number;
