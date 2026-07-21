@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="container">
+
+    <h1>Restaurant App</h1>
+    <h2>Iniciar Sesión</h2>
+
+    <form [formGroup]="form" (ngSubmit)="login()">
+
+        <input
+            type="text"
+            placeholder="Usuario"
+            formControlName="username">
+
+        <br><br>
+
+        <input
+            type="password"
+            placeholder="Contraseña"
+            formControlName="password">
+
+        <br><br>
+
+        <button type="submit">Ingresar</button>
+
+    </form>
+
+    <br>
+
+    <p style="color:red">{{error}}</p>
+
+    <a routerLink="/register">Registrarme</a>
+
+</div>
