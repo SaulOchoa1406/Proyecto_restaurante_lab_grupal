@@ -82,9 +82,9 @@ class Pedido(models.Model):
                 total=Sum("subtotal")
                 )["total"] or Decimal("0.00")
 
-        Pedido.objects.filter(pk=self.pk).update(total=total)
-
         self.total = total
+
+        Pedido.objects.filter(pk=self.pk).update(total=total)
 
     def save(self, *args, **kwargs):
 
