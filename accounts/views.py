@@ -5,6 +5,13 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import RegisterSerializer, UserSerializer
+from .permissions import IsAdministrador
+from .serializers import StaffUserCreateSerializer
+
+
+class StaffUserCreateView(generics.CreateAPIView):
+    serializer_class = StaffUserCreateSerializer
+    permission_classes = [IsAdministrador]
 
 
 class RegisterView(generics.CreateAPIView):
