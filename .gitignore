@@ -12,6 +12,9 @@ venv/
 # VS Code
 .vscode/
 
+# Angular
+angular/.angular
+
 # Environment variables
 .env
 
@@ -21,6 +24,3 @@ venv/
 
 # frontend, archivos pesados
 node_modules/
-
-# Angular
-frontend/angular/.angular
