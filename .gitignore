@@ -12,6 +12,9 @@ venv/
 # VS Code
 .vscode/
 
+# Angular
+.angular/
+
 # Environment variables
 .env
 
