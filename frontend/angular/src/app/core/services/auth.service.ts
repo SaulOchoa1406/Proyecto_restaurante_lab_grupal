@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environmnet } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 
@@ -11,7 +11,7 @@ import { User } from '../models/user';
 export class AuthService {
 
     private http = inject(HttpClient);
-    private api = environmnet.apiUrl;
+    private api = environment.apiUrl;
 
     constructor() {}
     

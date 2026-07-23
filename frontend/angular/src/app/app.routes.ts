@@ -2,9 +2,11 @@ import { Routes } from '@angular/router';
 import { Login } from './features/auth/login/login';
 // import { Register } from './features/auth/register/register';
 import { Dashboard } from './features/admin/dashboard/dashboard';
+import { DashboardWaiter } from './features/waiter/dashboard/dashboard.waiter';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
 import { Users } from './features/admin/users/users';
+import { DashboardKitchen } from './features/kitchen/dashboard/dashboard.kitchen';
 
 export const routes: Routes = [
   {
@@ -30,6 +32,15 @@ export const routes: Routes = [
     canActivate: [
       authGuard,
       roleGuard('MOZO')
+    ]
+  },
+
+  {
+    path: 'kitchen',
+    component: DashboardKitchen,
+    canActivate: [
+      authGuard,
+      roleGuard('COCINERO')
     ]
   },
 
