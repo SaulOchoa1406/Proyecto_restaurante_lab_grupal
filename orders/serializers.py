@@ -1,5 +1,8 @@
 from rest_framework import serializers
 
+from accounts.serializers import UserSerializer
+from tables.models import Mesa
+from tables.serializers import MesaSerializer
 from .models import Pedido, DetallePedido
 from inventory.models import Producto
 from inventory.serializers import ProductoSerializer
@@ -19,20 +22,30 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
         model = DetallePedido
         fields = [
             "id",
-            "pedido",
-            "producto",
-            "producto_id",
-            "cantidad",
-            "precio_unitario",
+            "order",
+            "product",
+            "product_id",
+            "amount",
+            "unit_price",
             "subtotal",
         ]
 
         read_only_fields = [
-            "precio_unitario",
+            "unit_price",
             "subtotal",
         ]
 
 class PedidoSerializer(serializers.ModelSerializer):
+
+    mesa = MesaSerializer(read_only=True)
+
+    mesa_id = serializers.PrimaryKeyRelatedField(
+        queryset=Mesa.objects.all(),
+        source="mesa",
+        write_only=True
+    )
+
+    mozo = UserSerializer(read_only=True)
 
     detalles = DetallePedidoSerializer(
         many=True,
@@ -44,18 +57,18 @@ class PedidoSerializer(serializers.ModelSerializer):
 
         fields = [
             "id",
-            "mesa",
-            "mozo",
-            "cliente_nombre",
-            "cliente_dni",
-            "fecha",
-            "estado",
+            "table",
+            "waiter",
+            "customer_name",
+            "customer_dni",
+            "date",
+            "status",
             "total",
-            "detalles",
+            "details",
         ]
 
         read_only_fields = [
-            "mozo",
-            "fecha",
+            "waiter",
+            "date",
             "total",
         ]
