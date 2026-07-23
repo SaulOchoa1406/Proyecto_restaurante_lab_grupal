@@ -4,6 +4,7 @@ import { Login } from './features/auth/login/login';
 import { Dashboard } from './features/admin/dashboard/dashboard';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
+import { Users } from './features/admin/users/users';
 
 export const routes: Routes = [
   {
@@ -13,14 +14,15 @@ export const routes: Routes = [
   },
 
   {
+    path: 'admin/users',
+    component: Users,
+    canActivate: [authGuard, roleGuard('ADMIN')]
+  },
+
+  {
     path: 'login',
     component: Login
   },
-
-  // {
-  //   path: 'register',
-  //   component: Register
-  // },
 
   {
     path: 'waiter',
