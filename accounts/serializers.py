@@ -27,3 +27,23 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'rol')
+
+class StaffUserCreateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+    rol = serializers.ChoiceField(
+            choices = [
+                User.Roles.MOZO,
+                User.Roles.COCINERO,
+            ]
+    )
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'first_name', 'last_name', 'rol')
+
+    def create(self, validate_date):
+        password = validate_date.pop('password')
+        user = User(**validate_date)
+        user.set_password(password)
+        user.save()
+        return user
