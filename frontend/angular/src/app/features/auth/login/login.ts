@@ -46,8 +46,8 @@ export class Login {
                 this.router.navigate(['/waiter']);
                 break;
               
-              case "ADMINISTRADOR":
-                this.router.navigate(['/admin']);
+              case "ADMIN":
+                this.router.navigate(['/admin/users']);
                 break;
               
               case "COCINERO":

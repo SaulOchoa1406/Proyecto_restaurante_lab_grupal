@@ -40,7 +40,7 @@ export class AuthService {
     }
     
     logout(): Observable<any> {
-        const refresh = this.getRefreshToken;
+        const refresh = this.getRefreshToken();
 
         return this.http.post(
             `${this.api}/accounts/logout/`,
@@ -49,7 +49,7 @@ export class AuthService {
             }
         ).pipe(
             tap(() => {
-                localStorage.removeItem("acces");
+                localStorage.removeItem("access");
                 localStorage.removeItem("refresh");
             })
         );
