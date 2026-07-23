@@ -13,7 +13,7 @@ venv/
 .vscode/
 
 # Angular
-.angular/
+angular/.angular
 
 # Environment variables
 .env
