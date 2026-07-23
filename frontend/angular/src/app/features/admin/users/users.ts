@@ -18,7 +18,7 @@ export class Users {
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
-    password: ['', Validators.required, Validators.minLength(8)],
+    password: ['', [Validators.required, Validators.minLength(8)]],
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
     rol: ['MOZO' as 'MOZO' | 'COCINERO',  Validators.required],
