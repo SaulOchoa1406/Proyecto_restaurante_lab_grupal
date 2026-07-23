@@ -137,7 +137,8 @@ REST_FRAMEWORK = {
             ),
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
-        )
+        ),
+        'COERCE_DECIMAL_TO_STRING': False, # evita que los números se conviertan a string
     }
 
 # Indicación a Django para que el usuario sea Usuario
