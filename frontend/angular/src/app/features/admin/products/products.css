@@ -1,0 +1,54 @@
+section {
+    margin-bottom: 24px;
+}
+
+.inline-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.categoria-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.categoria-list li {
+    background: #eee;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+.producto-form form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+table {
+    width: 100%;
+    border-collapse:
+    collapse;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+tr.inactive {
+    opacity: 0.5;
+}
+
+.error {
+    color: #b71c1c;
+}
+.success {
+    color: #1b5e20;
+}
