@@ -1,4 +1,4 @@
-from django.template.context_processors import request
+#from django.template.context_processors import request
 from rest_framework import serializers
 
 from accounts.models import Usuario
@@ -45,6 +45,7 @@ TRANSITIONS = {
     Usuario.Roles.MOZO: {
         Pedido.Estados.PENDIENTE: {Pedido.Estados.CANCELADO},
         Pedido.Estados.LISTO: {Pedido.Estados.ENTREGADO},
+        Pedido.Estados.ENTREGADO: {Pedido.Estados.ENTREGADO},
     },
 }
 
