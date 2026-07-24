@@ -18,4 +18,12 @@ export class TableService {
     get(id: number): Observable<Table> {
         return this.http.get<Table>(`${this.api}/tables/mesas/${id}/`);
     }
+
+    create(numero: number): Observable<Table> {
+        return this.http.post<Table>(`${this.api}/tables/mesas/`, { numero });
+    }
+
+    delete(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.api}/tables/mesas/${id}/`);
+    }
 }
