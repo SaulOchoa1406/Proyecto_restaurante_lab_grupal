@@ -1,1 +1,8 @@
-<p>dashboard works!</p>
+<div class="waiter-page">
+    <h1>Mesas</h1>
+    <app-table-list (tableSelected)="onTableSelected($event)"></app-table-list>
+</div>
+
+@if (selectedTable(); as table) {
+    <app-table-detail [table]="table" (closed)="closeDetail()"></app-table-detail>
+}
