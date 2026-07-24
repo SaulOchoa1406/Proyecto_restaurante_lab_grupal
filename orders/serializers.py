@@ -1,5 +1,7 @@
+from django.template.context_processors import request
 from rest_framework import serializers
 
+from accounts.models import Usuario
 from accounts.serializers import UserSerializer
 from tables.models import Mesa
 from tables.serializers import MesaSerializer
@@ -34,6 +36,18 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
             "unit_price",
             "subtotal",
         ]
+
+TRANSITIONS = {
+    Usuario.Roles.COCINERO: {
+        Pedido.Estados.PENDIENTE: {Pedido.Estados.EN_PREPARACION},
+        Pedido.Estados.EN_PREPARACION: {Pedido.Estados.LISTO},
+    },
+    Usuario.Roles.MOZO: {
+        Pedido.Estados.PENDIENTE: {Pedido.Estados.CANCELADO},
+        Pedido.Estados.LISTO: {Pedido.Estados.ENTREGADO},
+    },
+}
+
 
 class PedidoSerializer(serializers.ModelSerializer):
 
@@ -72,3 +86,48 @@ class PedidoSerializer(serializers.ModelSerializer):
             "date",
             "total",
         ]
+
+    def validate_state(self, value):
+        request = self.context.get("request")
+        user = request.user
+
+        if user.rol == Usuario.Roles.ADMIN:
+            return value
+
+        if self.instance is None:
+            if value != Pedido.Estados.PENDIENTE:
+                raise serializers.ValidationError(
+                    "Un pedido nuevo debe iniciar en estado PENDIENTE."
+                )
+            return value
+
+        estado_actual = self.instance.estado
+
+        if value == estado_actual:
+            return value
+
+        destinos_validos = TRANSITIONS.get(user.rol, {}).get(estado_actual, set())
+
+        if value not in destinos_validos:
+            raise serializers.ValidationError(
+                f"Tu rol no puede cambiar el pedido de {estado_actual} a {value}."
+            )
+
+        return value
+
+    def validate(self, attrs):
+
+        request = self.context.get("request")
+        user = getattr(request, "user", None)
+
+        if user and user.rol == Usuario.Roles.COCINERO and self.instance:
+            campos_no_estado = [
+                campo for campo in attrs
+                if campo != "estado" and attrs[campo] != getattr(self.instance, campo)
+            ]
+            if campos_no_estado:
+                raise serializers.ValidationError(
+                    "El cocinero solo puede actualizar el estado del pedido."
+                )
+
+        return attrs
