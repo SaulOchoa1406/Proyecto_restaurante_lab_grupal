@@ -10,7 +10,7 @@ export interface Product {
     status:boolean;
 }
 
-export interface ProductPayLoad {
+export interface ProductPayload {
     name: string;
     description: string;
     price: number;
