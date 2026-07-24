@@ -11,9 +11,9 @@ export interface Product {
 }
 
 export interface ProductPayload {
-    name: string;
-    description: string;
-    price: number;
-    category_id: number;
-    active: boolean;
+    nombre: string;
+    descripcion: string;
+    precio: number;
+    categoria_id: number;
+    activo: boolean;
 }

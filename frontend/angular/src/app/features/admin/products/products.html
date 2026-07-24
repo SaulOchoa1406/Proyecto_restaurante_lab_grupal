@@ -1,1 +1,70 @@
-<p>products works!</p>
+<h1>Productos</h1>
+
+@if (error()) { <p class="error">{{ error() }}</p> }
+@if (success()) { <p class="success">{{ success() }}</p> }
+
+<section class="categorias">
+    <h2>Categorías</h2>
+    <form [formGroup]="categoriaForm" (ngSubmit)="crearCategoria()" class="inline-form">
+        <input placeholder="Nueva categoría" formControlName="nombre">
+        <button type="submit">Agregar</button>
+    </form>
+    <ul class="categoria-list">
+        @for (categoria of categorias(); track categoria.id) {
+            <li>{{ categoria.name }}</li>
+        }
+    </ul>
+</section>
+
+<section class="producto-form">
+    <h2>{{ editandoId() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="guardarProducto()">
+    <input placeholder="Nombre" formControlName="nombre">
+    <input placeholder="Descripción" formControlName="descripcion">
+    <input type="number" step="0.01" placeholder="Precio" formControlName="precio">
+
+    <select formControlName="categoria_id">
+        <option [value]="0" disabled>Selecciona categoría</option>
+        @for (categoria of categorias(); track categoria.id) {
+            <option [value]="categoria.id">{{ categoria.name }}</option>
+        }
+    </select>
+
+    <label>
+        <input type="checkbox" formControlName="activo">
+        Activo
+    </label>
+
+    <button type="submit">{{ editandoId() ? 'Guardar cambios' : 'Crear producto' }}</button>
+    @if (editandoId()) {
+        <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+    }
+    </form>
+</section>
+
+<section class="producto-list">
+    <h2>Catálogo</h2>
+    @if (loading()) {
+        <p>Cargando...</p>
+    } @else {
+        <table>
+            <thead>
+            <tr><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Estado</th><th></th></tr>
+            </thead>
+            <tbody>
+            @for (producto of productos(); track producto.id) {
+                <tr [class.inactive]="!producto.status">
+                <td>{{ producto.name }}</td>
+                <td>{{ producto.category.name }}</td>
+                <td>S/ {{ producto.price.toFixed(2) }}</td>
+                <td>{{ producto.status ? 'Activo' : 'Inactivo' }}</td>
+                <td>
+                    <button (click)="editar(producto)">Editar</button>
+                    <button (click)="eliminar(producto.id)">Eliminar</button>
+                </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</section>
