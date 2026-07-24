@@ -21,12 +21,20 @@ export class OrderService {
         return this.http.get<Order>(`${this.api}/orders/pedidos/${id}/`);
     }
 
-    create(mesaId: number, customerName?: string, clienteDni?: string): Observable<Order> {
+    getActiveByTable(mesaId: number): Observable<Order[]> {
+        return this.http.get<Order[]>(`${this.api}/orders/pedidos/?mesa=${mesaId}`);
+    }
+
+    create(tableId: number, customerName?: string, customerDni?: string): Observable<Order> {
         return this.http.post<Order>(`${this.api}/orders/pedidos/`, {
-            table_id: mesaId,
+            table_id: tableId,
             customer_nombre: customerName ?? '',
-            customer_dni: clienteDni ?? '',
+            customer_dni: customerDni ?? '',
         });
+    }
+
+    updateCliente(id: number, data: { customer_name: string; customer_dni: string }): Observable<Order> {
+        return this.http.patch<Order>(`${this.api}/orders/pedidos/${id}/`, data);
     }
 
     updateStatus(id: number, status: OrderStatus): Observable<Order> {
@@ -43,5 +51,9 @@ export class OrderService {
 
     removeItem(detailId: number): Observable<void> {
         return this.http.delete<void>(`${this.api}/orders/detalles/${detailId}/`);
+    }
+
+    charge(id: number): Observable<Blob> {
+        return this.http.post(`${this.api}/orders/pedidos/${id}/cobrar/`, {}, { responseType: 'blob' });
     }
 }
