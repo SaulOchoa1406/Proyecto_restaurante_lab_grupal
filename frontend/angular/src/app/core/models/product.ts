@@ -9,3 +9,11 @@ export interface Product {
     category_id?:number;
     status:boolean;
 }
+
+export interface ProductPayLoad {
+    name: string;
+    description: string;
+    price: number;
+    category_id: number;
+    active: boolean;
+}
