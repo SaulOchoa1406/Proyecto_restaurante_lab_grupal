@@ -1,1 +1,32 @@
-<p>pending-orders works!</p>
+<div class="kitchen-board">
+    @if (loading()) {
+        <p>Cargando pedidos...</p>
+    } @else if (error()) {
+        <p class="error">{{ error() }}</p>
+    } @else if (orders().length === 0) {
+        <p class="empty">No hay pedidos pendientes por ahora.</p>
+    } @else {
+        @for (pedido of orders(); track pedido.id) {
+            <div class="order-card" [class.en-preparacion]="pedido.status === 'EN_PREPARACION'">
+            <div class="order-card-header">
+                <span class="mesa">Mesa {{ pedido.table.number }}</span>
+                <span class="badge" [class]="pedido.status.toLowerCase()">{{ pedido.status }}</span>
+            </div>
+
+            <ul class="items">
+                @for (detalle of pedido.details; track detalle.id) {
+                    <li>{{ detalle.amount }}x {{ detalle.product.name }}</li>
+                }
+            </ul>
+
+            <button (click)="avanzar(pedido)" [disabled]="processing() === pedido.id">
+                @if (pedido.status === 'PENDIENTE') {
+                    {{ processing() === pedido.id ? 'Iniciando...' : 'Empezar preparación' }}
+                } @else {
+                    {{ processing() === pedido.id ? 'Guardando...' : 'Marcar como listo' }}
+                }
+            </button>
+            </div>
+        }
+    }
+</div>

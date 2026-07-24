@@ -14,5 +14,5 @@ export interface Order {
     date:string;
     status:string;
     total:number;
-    datails:OrderDetail[];
+    details:OrderDetail[];
 }
