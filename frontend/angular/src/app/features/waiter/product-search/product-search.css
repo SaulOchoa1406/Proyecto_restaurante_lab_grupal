@@ -1,0 +1,39 @@
+.product-search {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.product-search input {
+  width: 100%;
+  padding: 9px;
+  box-sizing: border-box;
+}
+
+.resultados {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.resultados li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.resultados li:hover {
+  background: #f0f0f0;
+}
+
+.seleccionado {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 7px;
+}
+
+.seleccionado input[type="number"] {
+  width: 60px;
+}
