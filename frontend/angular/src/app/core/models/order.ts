@@ -2,7 +2,7 @@ import { Table } from "./table";
 import { User } from "./user";
 import { OrderDetail } from "./order-detail";
 
-export type OrderStatus = | 'PENDIENTE' | 'PREPARANDO' | 'LISTO' | 'ENTREGADO' | 'PAGADO' | 'CANCELADO';
+export type OrderStatus = | 'PENDIENTE' | 'EN_PREPARACION' | 'LISTO' | 'ENTREGADO' | 'PAGADO' | 'CANCELADO';
 
 export interface Order {
     id:number,
