@@ -1,1 +1,31 @@
-<p>tables works!</p>
+<h1>Mesas</h1>
+
+@if (error()) {
+    <p class="error">{{ error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="crear()" class="inline-form">
+    <input type="number" min="1" placeholder="Número de mesa" formControlName="numero">
+    <button type="submit">Agregar mesa</button>
+</form>
+
+@if (loading()) {
+    <p>Cargando...</p>
+} @else {
+    <table>
+    <thead><tr><th>Mesa</th><th>Estado</th><th></th></tr></thead>
+    <tbody>
+        @for (mesa of mesas(); track mesa.id) {
+            <tr>
+                <td>Mesa {{ mesa.number }}</td>
+                <td>
+                    <span class="badge" [class.occupied]="mesa.status">
+                        {{ mesa.status ? 'Ocupada' : 'Libre' }}
+                    </span>
+                </td>
+                <td><button (click)="eliminar(mesa.id)">Eliminar</button></td>
+            </tr>
+        }
+    </tbody>
+    </table>
+}
