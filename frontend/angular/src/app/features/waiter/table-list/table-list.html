@@ -1,1 +1,13 @@
-<p>table-list works!</p>
+<div class="table-grid">
+    @if (loading()) {
+        <p>Cargando mesas...</p>
+    } @else if (error()) {
+        <p class="error">{{ error() }}</p>
+    } @else {
+        @for (table of tables(); track table.id) {
+            <button class="table-btn" [class.occupied]="table.status" (click)="select(table)">
+                Mesa {{ table.number }}
+            </button>
+        }
+    }
+</div>
