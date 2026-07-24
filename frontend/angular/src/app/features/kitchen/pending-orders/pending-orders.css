@@ -1,0 +1,46 @@
+.kitchen-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 20px;
+}
+
+.order-card {
+    border: 2px solid #fdd835;
+    background: #fffde7;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.order-card.en-preparacion {
+    border-color: #42a5f5;
+    background: #e3f2fd;
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.mesa { font-weight: bold; }
+
+.badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    background: #eee;
+}
+
+.badge.pendiente { background: #fff3cd; color: #856404; }
+.badge.en_preparacion { background: #cfe2ff; color: #084298; }
+
+.items {
+    list-style: none;
+    margin: 0 0 12px;
+    padding: 0;
+}
+
+.error { color: #b71c1c; }
+.empty { color: #666; }
