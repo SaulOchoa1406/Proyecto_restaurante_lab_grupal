@@ -1,0 +1,19 @@
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.order-table th, .order-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.order-table button {
+  background: none;
+  border: none;
+  color: #b71c1c;
+  cursor: pointer;
+}
