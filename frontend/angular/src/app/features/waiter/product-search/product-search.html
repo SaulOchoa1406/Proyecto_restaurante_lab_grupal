@@ -1,1 +1,25 @@
-<p>product-search works!</p>
+<div class="product-search">
+    <input 
+        [(ngModel)]="query"
+        (ngModelChange)="onInput()"
+        placeholder="Buscar plato o bebida...">
+
+    @if (resultados().length > 0) {
+        <ul class="resultados">
+            @for (producto of resultados(); track producto.id) {
+            <li (click)="elegir(producto)">
+                {{ producto.name }} — S/ {{ producto.price.toFixed(2) }}
+            </li>
+            }
+        </ul>
+    }
+
+    @if (seleccionado(); as producto) {
+        <div class="seleccionado">
+            <strong>{{ producto.name }}</strong>
+            <span>S/ {{ producto.price.toFixed(2) }}</span>
+            <input type="number" min="1" [(ngModel)]="cantidad">
+            <button (click)="agregar()">Agregar</button>
+        </div>
+    }
+</div>
