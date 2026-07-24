@@ -1,1 +1,59 @@
-<p>table-detail works!</p>
+<div class="overlay" (click)="close()">
+    <div class="panel" (click)="$event.stopPropagation()">
+
+        <div class="panel-header">
+            <h2>Mesa {{ table.number }}</h2>
+            <button class="close-btn" (click)="close()">✕</button>
+        </div>
+
+        @if (loading()) {
+            <p>Cargando...</p>
+        }
+
+        @if (error()) {
+            <p class="error">{{ error() }}</p>
+        }
+
+        @if (!loading() && !pedido()) {
+            <div class="empty-state">
+                <p>Esta mesa está libre.</p>
+                <button (click)="crearPedido()" [disabled]="creating()">
+                    {{ creating() ? 'Creando...' : 'Crear pedido' }}
+                </button>
+            </div>
+        }
+
+        @if (pedido(); as p) {
+            <div class="pedido-info">
+                <span class="badge" [class]="p.status.toLowerCase()">{{ p.status }}</span>
+                <span>Total: S/ {{ p.total.toFixed(2) }}</span>
+            </div>
+
+            <form [formGroup]="clienteForm" (ngSubmit)="guardarCliente()" class="cliente-form">
+                <input placeholder="Nombre del cliente (opcional)" formControlName="cliente_nombre">
+                <input placeholder="DNI (opcional)" formControlName="cliente_dni">
+                <button type="submit">Guardar</button>
+            </form>
+
+            @if (p.status === 'PENDIENTE') {
+                <app-product-search (productoElegido)="onProductoSeleccionado($event)"></app-product-search>
+            }
+
+            <app-order-sumary [detalles]="p.datails" [editable]="p.status === 'PENDIENTE'"
+                (eliminar)="eliminarItem($event)">
+            </app-order-sumary>
+
+            <div class="acciones">
+                @if (p.status === 'LISTO') {
+                    <button (click)="marcarEntregado()">Marcar como entregado</button>
+                }
+                @if (p.status === 'ENTREGADO') {
+                    <button (click)="cobrar()" [disabled]="cobrando()">
+                        {{ cobrando() ? 'Generando boleta...' : 'Cobrar e imprimir boleta' }}
+                    </button>
+                }
+            </div>
+        }
+
+    </div>
+</div>
