@@ -1,1 +1,26 @@
-<p>order-sumary works!</p>
+<table class="order-table">
+  <thead>
+    <tr>
+      <th>Cant.</th>
+      <th>Producto</th>
+      <th>P. Unit.</th>
+      <th>Subtotal</th>
+      @if (editable) { <th></th> }
+    </tr>
+  </thead>
+  <tbody>
+    @for (detalle of detalles; track detalle.id) {
+      <tr>
+        <td>{{ detalle.amount }}</td>
+        <td>{{ detalle.product.name }}</td>
+        <td>S/ {{ detalle.unit_price.toFixed(2) }}</td>
+        <td>S/ {{ detalle.subtotal.toFixed(2) }}</td>
+        @if (editable) {
+          <td><button (click)="eliminar.emit(detalle.id)">✕</button></td>
+        }
+      </tr>
+    } @empty {
+      <tr><td colspan="5">Aún no hay productos agregados.</td></tr>
+    }
+  </tbody>
+</table>

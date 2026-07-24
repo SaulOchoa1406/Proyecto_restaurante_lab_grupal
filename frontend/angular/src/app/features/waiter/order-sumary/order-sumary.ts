@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { OrderDetail } from '../../../core/models/order-detail';
 
 @Component({
   selector: 'app-order-sumary',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './order-sumary.html',
   styleUrl: './order-sumary.css',
 })
-export class OrderSumary {}
+export class OrderSumary {
+  @Input({ required: true }) detalles: OrderDetail[] = [];
+  @Input() editable = false;
+  @Output() eliminar = new EventEmitter<number>();
+}
